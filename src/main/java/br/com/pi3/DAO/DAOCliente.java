@@ -25,7 +25,7 @@ public class DAOCliente {
         String query = "INSERT INTO cliente (NOME, CPF, SEXO, DTNASCIMENTO, ESTADOCIVIL, ENDERECO,"
                 + "COMPLEMENTO, NUMERO, BAIRRO, CEP, CIDADE, ESTADO)"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
-        long idPessoa = 0;
+        long idCliente = 0;
 
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
@@ -46,7 +46,7 @@ public class DAOCliente {
 
                 try (ResultSet chave = stmt.getGeneratedKeys()) {
                     if (chave.next()) {
-                        idPessoa = chave.getLong(1);
+                        idCliente = chave.getLong(1);
                     }
                 }
 
@@ -58,7 +58,7 @@ public class DAOCliente {
             }
         }
 
-        return idPessoa;
+        return idCliente;
     }
 
     public static ArrayList<Cliente> listar() {
