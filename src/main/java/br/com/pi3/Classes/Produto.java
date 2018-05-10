@@ -2,6 +2,7 @@ package br.com.pi3.Classes;
 
 public abstract class Produto {
     
+    private int id;
     private String nome;
     private int quantidade;
     private double precoCompra;
@@ -48,6 +49,14 @@ public abstract class Produto {
 
     public void setPrecoVenda(double precoVenda) {
         this.precoVenda = precoVenda;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     

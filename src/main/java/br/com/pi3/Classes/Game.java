@@ -6,20 +6,18 @@ public class Game extends Produto {
     
     private String plataforma;
     private String desenvolvedora;
-    private int classIndicativa;
-    private List<String> categorias;
+    private String classIndicativa;
+    private List<CategoriaGame> categorias;
 
     public Game() {
     }
 
     public Game(String nome, int quantidade, double precoCompra, double precoVenda, 
-            String plataforma, String desenvolvedora, int classIndicativa, 
-            List<String> categorias) {
+            String plataforma, String desenvolvedora, String classIndicativa) {
         super(nome, quantidade, precoCompra, precoVenda);
         this.plataforma = plataforma;
         this.desenvolvedora = desenvolvedora;
         this.classIndicativa = classIndicativa;
-        this.categorias = categorias;
     }
 
     public String getPlataforma() {
@@ -38,22 +36,20 @@ public class Game extends Produto {
         this.desenvolvedora = desenvolvedora;
     }
 
-    public int getClassIndicativa() {
+    public String getClassIndicativa() {
         return classIndicativa;
     }
 
-    public void setClassIndicativa(int classIndicativa) {
+    public void setClassIndicativa(String classIndicativa) {
         this.classIndicativa = classIndicativa;
     }
 
-    public List<String> getCategorias() {
+    public List<CategoriaGame> getCategorias() {
         return categorias;
     }
 
-    public void setCategorias(List<String> categorias) {
+    public void setCategorias(List<CategoriaGame> categorias) {
         this.categorias = categorias;
     }
-    
-    
     
 }
