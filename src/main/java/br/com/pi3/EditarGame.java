@@ -1,22 +1,38 @@
+
 package br.com.pi3;
 
 import br.com.pi3.Classes.CategoriaGame;
 import br.com.pi3.Classes.Game;
 import br.com.pi3.Classes.ServicoGame;
+import br.com.pi3.DAO.DAOFilial;
+import br.com.pi3.DAO.DAOGame;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "CadastrarGame", urlPatterns = {"/CadastrarGame"})
-public class CadastrarGame extends HttpServlet {
+@WebServlet(name = "EditarGame", urlPatterns = {"/EditarGame"})
+public class EditarGame extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        String idTemp = request.getParameter("id");
+        int id = Integer.parseInt(idTemp);
+        request.setAttribute("obterGame", DAOGame.obterGame(id));
+        request.setAttribute("categorias", DAOGame.listarCat(id));
+        RequestDispatcher rd = request.getRequestDispatcher("EditarGame.jsp");
+        try {
+            rd.forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(EditarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -28,6 +44,10 @@ public class CadastrarGame extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String idTemp = request.getParameter("id");
+        int id = Integer.parseInt(idTemp);
+        
         Game game = new Game();
         ArrayList<CategoriaGame> categorias = new ArrayList<>();
         game.setCategorias(categorias);
@@ -69,13 +89,14 @@ public class CadastrarGame extends HttpServlet {
         game.setPrecoCompra(precoCompra);
         game.setPrecoVenda(precoVenda);
         game.setQuantidade(quantidade);
-
+        game.setId(id);
+        
         try {
-            ServicoGame.cadastrarGame(game, categorias);
+            DAOGame.atualizarGame(game);
         } catch (Exception ex) {
 
         }
-
+        
         response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemGames");
         
     }

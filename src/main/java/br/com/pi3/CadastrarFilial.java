@@ -30,15 +30,15 @@ public class CadastrarFilial extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String nome = request.getParameter("TxtNome");
-        String cnpj = request.getParameter("TxtCNPJ");
-        String endereco = request.getParameter("TxtEndereco");
-        String numero = request.getParameter("TxtNumeroEnd");
-        String complemento = request.getParameter("TxtComplemento");
-        String bairro = request.getParameter("TxtBairro");
-        String cep = request.getParameter("TxtCep");
-        String cidade = request.getParameter("TxtCidade");
-        String estado = request.getParameter("Estados");
+        String nome = request.getParameter("txtNome");
+        String cnpj = request.getParameter("txtCnpj");
+        String endereco = request.getParameter("txtEndereco");
+        String complemento = request.getParameter("txtComplemento");
+        String cep = request.getParameter("txtCep");
+        String numero = request.getParameter("txtNumero");
+        String bairro = request.getParameter("txtBairro");
+        String cidade = request.getParameter("txtCidade");
+        String estado = request.getParameter("estado");
 
         Filial filial = new Filial(nome, cnpj, endereco, numero, complemento,
                 bairro, cep, cidade, estado);
@@ -50,7 +50,6 @@ public class CadastrarFilial extends HttpServlet {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CadastrarFilial.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         response.sendRedirect("ListagemFiliais");
 
     }

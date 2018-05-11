@@ -64,7 +64,7 @@ public class CadastrarCliente extends HttpServlet {
             Logger.getLogger(CadastrarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
             
-            response.sendRedirect("/pi3-1.0-SNAPSHOT/Listagem");
+            response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemClientes");
     }
 
     @Override

@@ -24,7 +24,7 @@ public class ExcluirCliente extends HttpServlet {
         String idTemp = request.getParameter("id");
         int id = Integer.parseInt(idTemp);
         DAOCliente.excluirCliente(id);
-        response.sendRedirect("/pi3-1.0-SNAPSHOT/Listagem");
+        response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemClientes");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

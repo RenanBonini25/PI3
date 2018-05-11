@@ -1,13 +1,13 @@
 package br.com.pi3.Classes;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Game extends Produto {
     
     private String plataforma;
     private String desenvolvedora;
     private String classIndicativa;
-    private List<CategoriaGame> categorias;
+    private ArrayList<CategoriaGame> categorias;
 
     public Game() {
     }
@@ -44,11 +44,11 @@ public class Game extends Produto {
         this.classIndicativa = classIndicativa;
     }
 
-    public List<CategoriaGame> getCategorias() {
+    public ArrayList<CategoriaGame> getCategorias() {
         return categorias;
     }
 
-    public void setCategorias(List<CategoriaGame> categorias) {
+    public void setCategorias(ArrayList<CategoriaGame> categorias) {
         this.categorias = categorias;
     }
     

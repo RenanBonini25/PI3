@@ -2,6 +2,7 @@ package br.com.pi3.DAO;
 
 import br.com.pi3.Classes.CategoriaGame;
 import br.com.pi3.Classes.Game;
+import br.com.pi3.Classes.ServicoGame;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -105,12 +106,13 @@ public class DAOGame {
         return listaGames;
     }
 
-    public static ArrayList<Game> listarCat(ArrayList<Game> games) {
+    public static ArrayList<CategoriaGame> listarCat(int id) {
         ArrayList<CategoriaGame> categorias = new ArrayList<>();
-        String query = "SELECT * FROM game_cat";
+        String query = "SELECT * FROM game_cat WHERE ID_GAME = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, id);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         CategoriaGame cat = new CategoriaGame();
@@ -118,15 +120,6 @@ public class DAOGame {
                         cat.setNome(resultados.getString("NOME_CAT"));
                         cat.setIdGame(resultados.getInt("ID_GAME"));
                         categorias.add(cat);
-                    }
-                    for (Game game : games) {
-                        ArrayList<CategoriaGame> catGames = new ArrayList<>();;
-                        for (CategoriaGame categoria : categorias) {
-                            if (resultados.getInt("ID_CAT") == (game.getId())) {
-                                catGames.add(categoria);
-                            }
-                        }
-                        game.setCategorias(catGames);
                     }
                 }
                 conn.commit();
@@ -139,7 +132,94 @@ public class DAOGame {
         } catch (SQLException ex) {
             Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return games;
+        return categorias;
+    }
+
+    public static ArrayList<Game> obterGame(int id) {
+        ArrayList<Game> listaGames = new ArrayList<>();
+        String query = "SELECT * FROM game WHERE ID = ?";
+        String query2 = "SELECT distinct GAME_CAT.ID_CAT FROM GAME_CAT\n"
+                + "INNER JOIN GAME ON ? = GAME_CAT.ID_GAME";
+        try (Connection conn = obterConexao()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, id);
+                try (ResultSet resultados = stmt.executeQuery()) {
+                    while (resultados.next()) {
+                        Game game = new Game();
+                        game.setId(resultados.getInt("ID"));
+                        game.setNome(resultados.getString("NOME"));
+                        game.setQuantidade(resultados.getInt("QUANTIDADE"));
+                        game.setPrecoCompra(resultados.getDouble("PRECOCOMPRA"));
+                        game.setPrecoVenda(resultados.getDouble("PRECOVENDA"));
+                        game.setClassIndicativa(resultados.getString("CLASSIFICACAO"));
+                        game.setPlataforma(resultados.getString("PLATAFORMA"));
+                        game.setDesenvolvedora(resultados.getString("DESENVOLVEDORA"));
+                        ArrayList<CategoriaGame> categorias = new ArrayList<>();
+                        try (PreparedStatement stmt2 = conn.prepareStatement(query2)) {
+                            stmt2.setInt(1, id);
+                            try (ResultSet resultados2 = stmt2.executeQuery()) {
+                                while (resultados2.next()) {
+                                    CategoriaGame categoria = new CategoriaGame();
+                                    categoria.setId(resultados2.getInt("ID_CAT"));
+                                    categoria.setIdGame(game.getId());
+                                    categorias.add(categoria);
+                                }
+                                game.setCategorias(categorias);
+                            }
+                        }
+                        listaGames.add(game);
+                        return listaGames;
+                    }
+                }
+
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public static void atualizarGame(Game game) {
+        String query = "UPDATE game SET NOME=?, QUANTIDADE=?, "
+                + "PRECOCOMPRA=?, PRECOVENDA=?, PLATAFORMA=?, DESENVOLVEDORA=?, CLASSIFICACAO=? WHERE ID=?";
+        String query2 = "DELETE FROM GAME_CAT WHERE ID_GAME = ?";
+        try (Connection conn = obterConexao()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+
+                stmt.setString(1, game.getNome());
+                stmt.setInt(2, game.getQuantidade());
+                stmt.setDouble(3, game.getPrecoCompra());
+                stmt.setDouble(4, game.getPrecoVenda());
+                stmt.setString(5, game.getPlataforma());
+                stmt.setString(6, game.getDesenvolvedora());
+                stmt.setString(7, game.getClassIndicativa());
+                stmt.setInt(8, game.getId());
+                stmt.executeUpdate();
+
+                try (PreparedStatement stmt2 = conn.prepareStatement(query2)) {
+                    stmt2.setInt(1, game.getId());
+                    stmt2.executeUpdate();
+                }
+
+                conn.commit();
+                ServicoGame.atualizarCategoria(game);
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
