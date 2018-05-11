@@ -1,20 +1,41 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="PT-BR">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Clientes</title>
+        <title>Listagem de Clientes</title>
+        <link rel="stylesheet" type="text/css" href="_css/estilo.css">
     </head>
     <body>
-        <div>
-            <a href="${pageContext.request.contextPath}/CadastrarCliente.jsp">Cadastrar Cliente</a>
+        <header>
+            <a href="home.jsp"><p id="txtJupiter">JUPITER</p></a>
+            <p id="usuario">Bem vindo Fulano de Tal</p>
+        </header>
+        <div id="menuContainer">
+            <nav>
+                <h2>Menu</h2>
+                <ul id="menu">	
+                    <a href="clientes.jsp"><li id="listaMenu"><img src="_imagens/cliente.png">Clientes</li></a>
+                    <li id="listaSubMenu">
+                        <img src="_imagens/produto.png">Produtos
+                        <ul id="subMenuProdutos">
+                            <a href="games.jsp"><li id="itemSub"><img src="_imagens/games.png">Games</li></a>
+                            <a href="consoles.jsp"><li id="itemSub"><img src="_imagens/console.png">Consoles</li></a>
+                            <a href="acessorios.jsp"><li id="itemSub"><img src="_imagens/acessorio.png">Acessórios</li></a>
+                            <a href="actionFigure.jsp"><li id="itemSub"><img src="_imagens/actionFigure.png">Action Figures</li></a>
+                        </ul>
+                    </li>
+                    <a href="usuarios.jsp"><li id="listaMenu"><img src="_imagens/funcionario.png">Usuários</li></a>
+                    <a href="filiais.jsp"><li id="listaMenu"><img src="_imagens/filial.png">Filiais</li></a>
+                    <a href="venda.jsp"><li id="listaMenu"><img src="_imagens/venda.png">Vendas</li></a>
+                    <a href="relatorio.jsp"><li id="listaMenu"><img src="_imagens/relatorio.png">Relatório</li></a>
+                </ul>
+            </nav>		
         </div>
-        <div style="width: 1200px; margin-left: auto; margin-right: auto;">
+        <div id="corpo">
             <table cellpadding="10">
                 <tr>
-                    <th>ID</th>
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Sexo</th>
@@ -27,25 +48,25 @@
                     <th>CEP</th>
                     <th>Cidade</th>
                     <th>Estado</th>
+                    <th>Ações</th>
                 </tr>
-                <c:forEach items="${Listagem}" var="p">
+                <c:forEach items="${Listagem}" var="cliente">
                     <tr>
-                        <td>${p.id}</td>
-                        <td>${p.nome}</td>
-                        <td>${p.cpf}</td>
-                        <td>${p.sexo}</td>
-                        <td>${p.dtNascimento}</td>
-                        <td>${p.estadoCivil}</td>
-                        <td>${p.endereco}</td>
-                        <td>${p.complemento}</td>
-                        <td>${p.numero}</td>
-                        <td>${p.bairro}</td>
-                        <td>${p.cep}</td>
-                        <td>${p.cidade}</td>
-                        <td>${p.estado}</td>
+                        <td>${cliente.nome}</td>
+                        <td>${cliente.cpf}</td>
+                        <td>${cliente.sexo}</td>
+                        <td>${cliente.dtNascimento}</td>
+                        <td>${cliente.estadoCivil}</td>
+                        <td>${cliente.endereco}</td>
+                        <td>${cliente.complemento}</td>
+                        <td>${cliente.numero}</td>
+                        <td>${cliente.bairro}</td>
+                        <td>${cliente.cep}</td>
+                        <td>${cliente.cidade}</td>
+                        <td>${cliente.estado}</td>
                         <td>
-                            <a href="EditCliente?id=${p.id}">Editar</a> 
-                            <a href="DeletCliente?id=${p.id}">Deletar</a> 
+                            <a href="EditarCliente?id=${cliente.id}">Editar</a> 
+                            <a href="ExcluirCliente?id=${cliente.id}">Deletar</a> 
                         </td>
                     </tr>
                 </c:forEach>

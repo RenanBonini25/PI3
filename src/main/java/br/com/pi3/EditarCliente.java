@@ -3,7 +3,6 @@ package br.com.pi3;
 import br.com.pi3.Classes.Cliente;
 import br.com.pi3.DAO.DAOCliente;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "EditarCliente", urlPatterns = {"/EditCliente"})
+@WebServlet(name = "EditarCliente", urlPatterns = {"/EditarCliente"})
 public class EditarCliente extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
@@ -37,36 +36,36 @@ public class EditarCliente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String idTemp = request.getParameter("id");
         int id = Integer.parseInt(idTemp);
 
-        String nome = request.getParameter("TxtNome");
-        String cpf = request.getParameter("TxtCPF");
+        String nome = request.getParameter("txtNome");
+        String cpf = request.getParameter("txtCpf");
         String sexo = request.getParameter("Sexo");
-        String data = request.getParameter("DataNascimento");
+        String data = request.getParameter("dataNascimento");
         String estadoCivil = request.getParameter("EstadoCivil");
-        String endereco = request.getParameter("TxtEndereco");
-        String complemento = request.getParameter("TxtComplemento");
-        String numero = request.getParameter("TxtNumeroEnd");
-        String bairro = request.getParameter("TxtBairro");
-        String cep = request.getParameter("TxtCep");
-        String cidade = request.getParameter("TxtCidade");
-        String estado = request.getParameter("Estados");
+        String endereco = request.getParameter("txtEndereco");
+        String complemento = request.getParameter("txtComplemento");
+        String numero = request.getParameter("txtNumero");
+        String bairro = request.getParameter("txtBairro");
+        String cep = request.getParameter("txtCep");
+        String cidade = request.getParameter("txtCidade");
+        String estado = request.getParameter("estado");
 
         Cliente cliente = new Cliente(nome, cpf, sexo, data, estadoCivil, endereco, complemento, numero, bairro,
                 cep, cidade, estado);
         cliente.setId(id);
 
+        try {
         DAOCliente.atualizarCliente(cliente);
-
+        } catch (Exception ex) {
+            
+        }
+        
         response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemClientes");
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

@@ -15,7 +15,7 @@
             <nav>
                 <h2>Menu</h2>
                 <ul id="menu">	
-                    <a href="cliente.jsp"><li id="listaMenu"><img src="_imagens/cliente.png">Clientes</li></a>
+                    <a href="clientes.jsp"><li id="listaMenu"><img src="_imagens/cliente.png">Clientes</li></a>
                     <li id="listaSubMenu">
                         <img src="_imagens/produto.png">Produtos
                         <ul id="subMenuProdutos">
@@ -25,7 +25,7 @@
                             <a href="actionFigure.jsp"><li id="itemSub"><img src="_imagens/actionFigure.png">Action Figures</li></a>
                         </ul>
                     </li>
-                    <a href="funcionarios.jsp"><li id="listaMenu"><img src="_imagens/funcionario.png">Funcionários</li></a>
+                    <a href="usuarios.jsp"><li id="listaMenu"><img src="_imagens/funcionario.png">Usuários</li></a>
                     <a href="filiais.jsp"><li id="listaMenu"><img src="_imagens/filial.png">Filiais</li></a>
                     <a href="venda.jsp"><li id="listaMenu"><img src="_imagens/venda.png">Vendas</li></a>
                     <a href="relatorio.jsp"><li id="listaMenu"><img src="_imagens/relatorio.png">Relatório</li></a>
@@ -33,7 +33,9 @@
             </nav>		
         </div>
         <div id="corpo">
-            <a href="_cadastrarFiliais.jsp"><img class="add" src="_imagens/add.png"></a>
+            <a href="${pageContext.request.contextPath}/CadastrarFiliais.jsp"><img class="add" src="_imagens/add.png"></a>
+            <br>
+            <a href="${pageContext.request.contextPath}/ListagemFiliais"><img class="add" src="_imagens/list.png"></a>
         </div>
 
     </body>

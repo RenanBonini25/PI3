@@ -1,4 +1,4 @@
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -9,10 +9,12 @@
     </head>
     <body>
     <center>
-        <p>Jupiter</p>		
+        <p>Jupiter</p>
+        
 
         <div id="login">
             <form action="${pageContext.request.contextPath}/Login" method="post">
+            <span> Usuário ou Senha inválido! </span>
                 <input type="text" name="username" placeholder="Nome de usuário" id="formLogin"><br><hr>
                 <input type="password" name="senha" placeholder="Senha" id="formLogin">
                 

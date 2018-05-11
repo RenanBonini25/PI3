@@ -1,7 +1,6 @@
 
 package br.com.pi3.DAO;
 
-import br.com.pi3.Classes.Filial;
 import br.com.pi3.Classes.Permissao;
 import br.com.pi3.Classes.Usuario;
 import java.sql.Connection;
@@ -27,8 +26,8 @@ public class DAOUsuario {
     
     public static long incluir(Usuario usuario) throws SQLException, ClassNotFoundException {
         String query = "INSERT INTO usuario (NOME, CPF, USERNAME,"
-                + "SENHA, FILIAL, PERMISSAO)"
-                + "VALUES (?, ?, ?, ?, ?, ?) ";
+                + "SENHA, SETOR, FILIAL, PERMISSAO)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?) ";
         long idUsuario = 0;
 
         try (Connection conn = obterConexao()) {
@@ -38,8 +37,9 @@ public class DAOUsuario {
                 stmt.setString(2, usuario.getCpf());
                 stmt.setString(3, usuario.getUserName());
                 stmt.setString(4, usuario.getSenha());
-                stmt.setString(5, usuario.getFilial());
-                stmt.setString(6, usuario.getPermissoes().get(0).getNome());
+                stmt.setString(5, usuario.getSetor());
+                stmt.setString(6, usuario.getFilial());
+                stmt.setString(7, usuario.getPermissoes().get(0).getNome());
                 stmt.executeUpdate();
 
                 try (ResultSet chave = stmt.getGeneratedKeys()) {
@@ -56,6 +56,38 @@ public class DAOUsuario {
         return idUsuario;
     }
     
+    public static Usuario procurarUsuario(String username) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM usuario WHERE username = ?";
+        Usuario usuario = new Usuario();
+        try (Connection conn = obterConexao()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, username);
+                try (ResultSet resultados = stmt.executeQuery()) {
+                    while (resultados.next()) {
+                        usuario.setId(resultados.getInt("ID"));
+                        usuario.setNome(resultados.getString("NOME"));
+                        usuario.setCpf(resultados.getString("CPF"));
+                        usuario.setUserName(resultados.getString("USERNAME"));
+                        usuario.setSenha(resultados.getString("SENHA"));
+                        usuario.setSetor(resultados.getString("SETOR"));
+                        usuario.setFilial(resultados.getString("FILIAL"));
+                        Permissao permissao = new Permissao();
+                        permissao.setNome(resultados.getString("PERMISSAO"));
+                        List<Permissao> permissoes = new ArrayList<>();
+                        permissoes.add(permissao);
+                        usuario.setPermissoes(permissoes);
+                    }
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        }
+        return usuario;
+    }
+    
     public static ArrayList<Usuario> listar() {
         ArrayList<Usuario> listaUsuarios = new ArrayList<>();
         String query = "SELECT * FROM usuario";
@@ -70,6 +102,7 @@ public class DAOUsuario {
                         usuario.setCpf(resultados.getString("CPF"));
                         usuario.setUserName(resultados.getString("USERNAME"));
                         usuario.setSenha(resultados.getString("SENHA"));
+                        usuario.setSetor(resultados.getString("SETOR"));
                         usuario.setFilial(resultados.getString("FILIAL"));
                         Permissao permissao = new Permissao();
                         permissao.setNome(resultados.getString("PERMISSAO"));
@@ -107,6 +140,7 @@ public class DAOUsuario {
                         usuario.setCpf(resultados.getString("CPF"));
                         usuario.setUserName(resultados.getString("USERNAME"));
                         usuario.setSenha(resultados.getString("SENHA"));
+                        usuario.setSetor(resultados.getString("SETOR"));
                         usuario.setFilial(resultados.getString("FILIAL"));
                         Permissao permissao = new Permissao();
                         permissao.setNome(resultados.getString("PERMISSAO"));
@@ -133,7 +167,7 @@ public class DAOUsuario {
     
     public static void atualizarUsuario(Usuario usuario) {
         String query = "UPDATE usuario SET NOME=?, CPF=?, "
-                + "USERNAME=?, SENHA=?, FILIAL=?, PERMISSAO=? WHERE ID=?";
+                + "USERNAME=?, SENHA=?, SETOR=?, FILIAL=?, PERMISSAO=? WHERE ID=?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -142,9 +176,10 @@ public class DAOUsuario {
                 stmt.setString(2, usuario.getCpf());
                 stmt.setString(3, usuario.getUserName());
                 stmt.setString(4, usuario.getSenha());
-                stmt.setString(5, usuario.getFilial());
-                stmt.setString(6, usuario.getPermissoes().get(0).getNome());
-                stmt.setInt(7, usuario.getId());
+                stmt.setString(5, usuario.getSetor());
+                stmt.setString(6, usuario.getFilial());
+                stmt.setString(7, usuario.getPermissoes().get(0).getNome());
+                stmt.setInt(8, usuario.getId());
 
                 stmt.executeUpdate();
                 conn.commit();

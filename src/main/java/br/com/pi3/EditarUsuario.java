@@ -47,16 +47,17 @@ public class EditarUsuario extends HttpServlet {
         
         String idTemp = request.getParameter("id");
         int id = Integer.parseInt(idTemp);
-        String nome = request.getParameter("TxtNome");
-        String cpf = request.getParameter("TxtCPF");
-        String username = request.getParameter("TxtUserName");
-        String senha = request.getParameter("TxtSenha");
+        String nome = request.getParameter("txtNome");
+        String cpf = request.getParameter("txtCpf");
+        String username = request.getParameter("txtUsername");
+        String senha = request.getParameter("txtSenha");
+        String setor = request.getParameter("Setor");
         String filial = request.getParameter("Filial");
         String permissaoNome = request.getParameter("Permissao");
         
         Permissao permissao = new Permissao();
         permissao.setNome(permissaoNome);
-        Usuario usuario = new Usuario(nome, cpf, username, senha, filial);
+        Usuario usuario = new Usuario(nome, cpf, username, senha, setor, filial);
         List<Permissao> permissoes = new ArrayList<>();
         permissoes.add(permissao);
         usuario.setPermissoes(permissoes);

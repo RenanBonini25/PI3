@@ -15,7 +15,7 @@
             <nav>
                 <h2>Menu</h2>
                 <ul id="menu">	
-                    <a href="cliente.jsp"><li id="listaMenu"><img src="_imagens/cliente.png">Clientes</li></a>
+                    <a href="clientes.jsp"><li id="listaMenu"><img src="_imagens/cliente.png">Clientes</li></a>
                     <li id="listaSubMenu">
                         <img src="_imagens/produto.png">Produtos
                         <ul id="subMenuProdutos">

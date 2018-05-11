@@ -221,5 +221,19 @@ public class DAOGame {
             Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void excluirGame(int id) {
+        String query = "DELETE FROM game WHERE ID = ?";
+        try (Connection conn = obterConexao()) {
+            try (PreparedStatement stmtCategoria = conn.prepareStatement(query)) {
+                stmtCategoria.setInt(1, id);
+                stmtCategoria.executeUpdate();
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 }

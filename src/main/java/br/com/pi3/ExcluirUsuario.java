@@ -17,7 +17,7 @@ public class ExcluirUsuario extends HttpServlet {
         String idTemp = request.getParameter("id");
         int id = Integer.parseInt(idTemp);
         DAOUsuario.excluirUsuario(id);
-        response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemUsuario");
+        response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemUsuarios");
     }
 
     @Override

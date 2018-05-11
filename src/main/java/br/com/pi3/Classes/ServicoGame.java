@@ -21,6 +21,14 @@ public class ServicoGame {
         }
     }
     
+    public static void atualizarGame(Game game, ArrayList<CategoriaGame> categorias) {
+        try {
+            DAOGame.atualizarGame(game);
+        } catch (Exception ex) {
+            
+        }
+    }
+    
     public static void atualizarCategoria(Game game) {
         ArrayList<CategoriaGame> categorias = game.getCategorias();
         for (int i = 0; i < categorias.size(); i++) {

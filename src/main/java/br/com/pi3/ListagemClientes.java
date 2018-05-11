@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Lilian
  */
-@WebServlet(name = "Listagem", urlPatterns = {"/Listagem"})
+@WebServlet(name = "ListagemClientes", urlPatterns = {"/ListagemClientes"})
 public class ListagemClientes extends HttpServlet {
 
     /**

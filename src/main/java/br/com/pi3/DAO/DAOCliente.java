@@ -103,7 +103,7 @@ public class DAOCliente {
     }
 
     public static ArrayList<Cliente> obterCliente(int id) {
-        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+        ArrayList<Cliente> clientes = new ArrayList<>();
         String query = "SELECT * FROM CLIENTE WHERE ID = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);

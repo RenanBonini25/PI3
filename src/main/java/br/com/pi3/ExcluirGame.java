@@ -1,24 +1,24 @@
+
 package br.com.pi3;
 
 import br.com.pi3.DAO.DAOGame;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "ListagemGames", urlPatterns = {"/ListagemGames"})
-public class ListagemGames extends HttpServlet {
+@WebServlet(name = "ExcluirGame", urlPatterns = {"/ExcluirGame"})
+public class ExcluirGame extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        request.setAttribute("Listagem", DAOGame.listar());
-        RequestDispatcher rd = request.getRequestDispatcher("ListagemGames.jsp");
-        rd.forward(request, response);
-
+        String idTemp = request.getParameter("id");
+        int id = Integer.parseInt(idTemp);
+        DAOGame.excluirGame(id);
+        response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemGames");
     }
 
     @Override

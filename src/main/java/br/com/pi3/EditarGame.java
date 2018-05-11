@@ -52,34 +52,54 @@ public class EditarGame extends HttpServlet {
         ArrayList<CategoriaGame> categorias = new ArrayList<>();
         game.setCategorias(categorias);
 
-        String nome = request.getParameter("TxtNome");
-        if (request.getParameter("cat1") != null) {
+        String nome = request.getParameter("txtNome");
+        
+        if (request.getParameter("catAcao") != null) {
             CategoriaGame cat = new CategoriaGame();
             cat.setNome("Ação");
             cat.setId(1);
             categorias.add(cat);
         }
-        if (request.getParameter("cat2") != null) {
+        if (request.getParameter("catSimulacao") != null) {
             CategoriaGame cat = new CategoriaGame();
-            cat.setNome("Simulador");
+            cat.setNome("Simulação");
             cat.setId(2);
             categorias.add(cat);
         }
-        if (request.getParameter("cat3") != null) {
+        if (request.getParameter("catRPG") != null) {
             CategoriaGame cat = new CategoriaGame();
             cat.setNome("RPG");
             cat.setId(3);
             categorias.add(cat);
         }
+        if (request.getParameter("catEsportes") != null) {
+            CategoriaGame cat = new CategoriaGame();
+            cat.setNome("Esportes");
+            cat.setId(4);
+            categorias.add(cat);
+        }
+        if (request.getParameter("catAventura") != null) {
+            CategoriaGame cat = new CategoriaGame();
+            cat.setNome("Aventura");
+            cat.setId(5);
+            categorias.add(cat);
+        }
+        if (request.getParameter("catEstrategia") != null) {
+            CategoriaGame cat = new CategoriaGame();
+            cat.setNome("Estratégia");
+            cat.setId(6);
+            categorias.add(cat);
+        }
+        
 
-        String desenv = request.getParameter("TxtDesenvolvedora");
-        String indicClass = request.getParameter("TxtIndicClassif");
+        String desenv = request.getParameter("txtDesenvolvedora");
+        String indicClass = request.getParameter("txtClassificacao");
         String plataforma = request.getParameter("Plataforma");
-        String compra = request.getParameter("TxtPrecoCompra");
+        String compra = request.getParameter("txtPrecoCompra");
         double precoCompra = Double.parseDouble(compra);
-        String venda = request.getParameter("TxtPrecoVenda");
+        String venda = request.getParameter("txtPrecoVenda");
         double precoVenda = Double.parseDouble(venda);
-        String qtd = request.getParameter("TxtQuantidade");
+        String qtd = request.getParameter("txtQuantidade");
         int quantidade = Integer.parseInt(qtd);
 
         game.setNome(nome);
@@ -90,13 +110,13 @@ public class EditarGame extends HttpServlet {
         game.setPrecoVenda(precoVenda);
         game.setQuantidade(quantidade);
         game.setId(id);
-        
+
         try {
             DAOGame.atualizarGame(game);
         } catch (Exception ex) {
 
         }
-        
+
         response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemGames");
         
     }

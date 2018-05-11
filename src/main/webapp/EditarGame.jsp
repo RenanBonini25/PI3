@@ -1,72 +1,85 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="PT-BR">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Editar Game</title>
+        <title>Editar Filial</title>
+        <link rel="stylesheet" type="text/css" href="_css/estilo.css">
     </head>
     <body>
-        <c:forEach items="${obterGame}" var="p">
-            <div id="corpo">
-                <div id="dados">
-
-                    <input type="hidden" value="${p.id}" name="id">
-                    <label>Nome</label>
-                    <input type="text" value="${p.nome}" name="TxtNome"><br><br>
-                    <label>Plataforma</label>
-                    <select name="Plataforma">
-                        <option value="${p.plataforma}">${p.plataforma}</option>
-                        <option value="playstation">Playstation 4</option>
-                        <option value="xboxOne">Xbox One</option>
-                        <option value="nintendoWii">Nintendo Wii</option>
-                    </select><br><br>
-                    <label>Categorias</label>
-                    <c:forEach items="${categorias}" var="c" >
-                        
-                        <c:choose>
-                            <c:when test="${c.id=='1'}">
-                                <input type="checkbox" name="cat1" checked>Ação<br><br>
-                            </c:when>
-                            <c:otherwise>
-                                <input type="checkbox" name="cat1">Ação<br><br>
-                            </c:otherwise>
-                        </c:choose>
-                        <c:choose>
-                            <c:when test="${c.id=='2'}">
-                                <input type="checkbox" name="cat2" checked>Simulador<br><br>
-                            </c:when>
-                            <c:otherwise>
-                                <input type="checkbox" name="cat2">Simulador<br><br>
-                            </c:otherwise>
-                        </c:choose>
-                        <c:choose>
-                            <c:when test="${c.id=='3'}">
-                                <input type="checkbox" name="cat3" checked>RPG<br><br>
-                            </c:when>
-                            <c:otherwise>
-                                <input type="checkbox" name="cat3">RPG<br><br>
-                            </c:otherwise>
-                        </c:choose>
-
-                    </c:forEach>
-                    <label>Desenvolvedora</label>
-                    <input type="text" value="${p.desenvolvedora}" name="TxtDesenvolvedora"><br><br>
-                    <label>Indicação Classificativa</label>
-                    <input type="text" value="${p.classIndicativa}" name="TxtIndicClassif"><br><br>
-                    <label>Preço Compra</label>
-                    <input type="text" value="${p.precoCompra}" name="TxtPrecoCompra"><br><br>
-                    <label>Preço Venda</label>
-                    <input type="text" value="${p.precoVenda}" name="TxtPrecoVenda"><br><br>
-                    <label>Quantidade</label>
-                    <input type="text" value="${p.quantidade}" name="TxtQuantidade"><br><br>
-
-
-                    <input type="submit" name="BotaoSalvar" value="Salvar">
-
-                </c:forEach>
-
-            </div>		
+        <header>
+            <a href="home.jsp"><p id="txtJupiter">JUPITER</p></a>
+            <p id="usuario">Bem vindo Fulano de Tal</p>
+        </header>
+        <div id="menuContainer">
+            <nav>
+                <h2>Menu</h2>
+                <ul id="menu">	
+                    <a href="cliente.jsp"><li id="listaMenu"><img src="_imagens/cliente.png">Clientes</li></a>
+                    <li id="listaSubMenu">
+                        <img src="_imagens/produto.png">Produtos
+                        <ul id="subMenuProdutos">
+                            <a href="games.jsp"><li id="itemSub"><img src="_imagens/games.png">Games</li></a>
+                            <a href="consoles.jsp"><li id="itemSub"><img src="_imagens/console.png">Consoles</li></a>
+                            <a href="acessorios.jsp"><li id="itemSub"><img src="_imagens/acessorio.png">Acessórios</li></a>
+                            <a href="actionFigure.jsp"><li id="itemSub"><img src="_imagens/actionFigure.png">Action Figures</li></a>
+                        </ul>
+                    </li>
+                    <a href="funcionarios.jsp"><li id="listaMenu"><img src="_imagens/funcionario.png">Funcionários</li></a>
+                    <a href="filiais.jsp"><li id="listaMenu"><img src="_imagens/filial.png">Filiais</li></a>
+                    <a href="venda.jsp"><li id="listaMenu"><img src="_imagens/venda.png">Vendas</li></a>
+                    <a href="relatorio.jsp"><li id="listaMenu"><img src="_imagens/relatorio.png">Relatório</li></a>
+                </ul>
+            </nav>		
+        </div>
+        <div id="corpo">
+            <c:forEach items="${obterGame}" var="game">
+            <form action="${pageContext.request.contextPath}/EditarGame" method="post" id="formularioCadastro">
+                <input type="hidden" value="${game.id}" name="id">
+                <input type="text" value="${game.nome}" name="txtNome" placeholder="NOME" class="formulario">
+                </br></br>
+                <input type="text" value="${game.desenvolvedora}" name="txtDesenvolvedora" placeholder="DESENVOLVEDORA" class="formulario">
+                </br></br>
+                <select name="Plataforma" class="formSelect">
+                    <option value="${game.plataforma}">${game.plataforma}</option>
+                    <option value="PC">PC</option>
+                    <option value="PS3">PS3</option>
+                    <option value="PS4">PS4</option>
+                    <option value="XBOX 360">XBOX 360</option>
+                    <option value="XBOX ONE">XBOX ONE</option>
+                </select>
+                <input type="text" value="${game.quantidade}" name="txtQuantidade" placeholder="QUANTIDADE" class="formSelect">
+                </br></br>
+                <input type="text" value="${game.precoCompra}" name="txtPrecoCompra" placeholder="PREÇO COMPRA" class="formSelect">
+                <input type="text" value="${game.precoVenda}" name="txtPrecoVenda" placeholder="PREÇO VENDA" class="formSelect">
+                </br></br>
+                <input type="text" value="${game.classIndicativa}" name="txtClassificacao" placeholder="CLASSIFICAÇÃO INDICATIVA" class="formSelect">
+                <fieldset class="categoria">
+                    <legend>Categorias</legend>
+                    <div>
+                        <input type="checkbox" id="acao" name="catAcao" value="acao">
+                        <label for="acao">Ação</label>
+                        <input type="checkbox" id="aventura" name="catAventura" value="aventura">
+                        <label for="aventura">Aventura</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="estrategia" name="catEstrategia" value="estrategia">
+                        <label for="estrategia">Estratégia</label>
+                        <input type="checkbox" id="rpg" name="catRPG" value="rpg">
+                        <label for="rpg">RPG</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="esportes" name="catEsportes" value="esportes">
+                        <label for="esportes">Esportes</label>
+                        <input type="checkbox" id="simulacao" name="catSimulacao" value="simulacao">
+                        <label for="simulacao">Simulação</label>
+                    </div>
+                </fieldset>
+                <br>
+                <input type="submit" value="SALVAR" id="botao">
+            </form>
+            </c:forEach>
         </div>
     </body>
 </html>

@@ -41,10 +41,11 @@ public class CadastrarUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String nome = request.getParameter("TxtNome");
-        String cpf = request.getParameter("TxtCPF");
-        String userName = request.getParameter("TxtUserName");
-        String senha = request.getParameter("TxtSenha");
+        String nome = request.getParameter("txtNome");
+        String cpf = request.getParameter("txtCpf");
+        String userName = request.getParameter("txtUsername");
+        String senha = request.getParameter("txtSenha");
+        String setor = request.getParameter("Setor");
         String filial = request.getParameter("Filial");
         String permissaoNome = request.getParameter("Permissao");
         Permissao permissao = new Permissao();
@@ -55,6 +56,7 @@ public class CadastrarUsuario extends HttpServlet {
         usuario.setCpf(cpf);
         usuario.setUserName(userName);
         usuario.setSenha(senha);
+        usuario.setSetor(setor);
         usuario.setFilial(filial);
         List<Permissao> permissoes = new ArrayList<>();
         permissoes.add(permissao);

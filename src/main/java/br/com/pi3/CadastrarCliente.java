@@ -8,9 +8,7 @@ package br.com.pi3;
 import br.com.pi3.Classes.Cliente;
 import br.com.pi3.DAO.DAOCliente;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -40,18 +38,18 @@ public class CadastrarCliente extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
           
-            String nome = request.getParameter("TxtNome");
-            String cpf = request.getParameter("TxtCPF");
+            String nome = request.getParameter("txtNome");
+            String cpf = request.getParameter("txtCpf");
             String sexo = request.getParameter("Sexo");
-            String data = request.getParameter("DataNascimento");
+            String data = request.getParameter("dataNascimento");
             String estadoCivil = request.getParameter("EstadoCivil");
-            String endereco = request.getParameter("TxtEndereco");
-            String complemento = request.getParameter("TxtComplemento");
-            String numero = request.getParameter("TxtNumeroEnd");
-            String bairro = request.getParameter("TxtBairro");
-            String cep = request.getParameter("TxtCep");
-            String cidade = request.getParameter("TxtCidade");
-            String estado = request.getParameter("Estados");
+            String endereco = request.getParameter("txtEndereco");
+            String complemento = request.getParameter("txtComplemento");
+            String numero = request.getParameter("txtNumero");
+            String bairro = request.getParameter("txtBairro");
+            String cep = request.getParameter("txtCep");
+            String cidade = request.getParameter("txtCidade");
+            String estado = request.getParameter("estado");
             
             Cliente cliente = new Cliente (nome,cpf,sexo,data,estadoCivil,endereco,complemento,
             numero,bairro,cep,cidade,estado);

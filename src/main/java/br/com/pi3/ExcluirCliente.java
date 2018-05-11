@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet(name = "ExcluirCliente", urlPatterns = {"/DeletCliente"})
+@WebServlet(name = "ExcluirCliente", urlPatterns = {"/ExcluirCliente"})
 public class ExcluirCliente extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

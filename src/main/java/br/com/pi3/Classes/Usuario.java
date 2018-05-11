@@ -9,17 +9,19 @@ public class Usuario {
     private String cpf;
     private String userName;
     private String senha;
+    private String setor;
     private String filial;
     private List<Permissao> permissoes;
 
     public Usuario() {
     }
 
-    public Usuario(String nome, String cpf, String username, String senha, String filial) {
+    public Usuario(String nome, String cpf, String username, String senha, String setor, String filial) {
         this.nome = nome;
         this.cpf = cpf;
         this.userName = username;
         this.senha = senha;
+        this.setor = setor;
         this.filial = filial;
     }
 
@@ -86,6 +88,14 @@ public class Usuario {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getSetor() {
+        return setor;
+    }
+
+    public void setSetor(String setor) {
+        this.setor = setor;
     }
 
 
