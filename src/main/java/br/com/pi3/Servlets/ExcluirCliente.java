@@ -1,7 +1,13 @@
-package br.com.pi3;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.com.pi3.Servlets;
 
-import br.com.pi3.DAO.DAOFilial;
+import br.com.pi3.DAO.DAOCliente;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,14 +15,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "ListagemFiliais", urlPatterns = {"/ListagemFiliais"})
-public class ListagemFiliais extends HttpServlet {
+
+@WebServlet(name = "ExcluirCliente", urlPatterns = {"/ExcluirCliente"})
+public class ExcluirCliente extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("Listagem", DAOFilial.listar());
-        RequestDispatcher rd = request.getRequestDispatcher("ListagemFiliais.jsp");
-        rd.forward(request, response);
+        String idTemp = request.getParameter("id");
+        int id = Integer.parseInt(idTemp);
+        DAOCliente.excluirCliente(id);
+        response.sendRedirect("/pi3-1.0-SNAPSHOT/ListagemClientes");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

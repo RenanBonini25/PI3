@@ -7,6 +7,7 @@ public abstract class Produto {
     private int quantidade;
     private double precoCompra;
     private double precoVenda;
+    private boolean ativo;
 
     public Produto() {
     }

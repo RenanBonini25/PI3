@@ -23,8 +23,8 @@ public class DAOFilial {
 
     public static long incluir(Filial filial) throws SQLException, ClassNotFoundException {
         String query = "INSERT INTO filial (NOME, CNPJ, ENDERECO,"
-                + "COMPLEMENTO, NUMERO, BAIRRO, CEP, CIDADE, ESTADO)"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+                + "COMPLEMENTO, NUMERO, BAIRRO, CEP, CIDADE, ESTADO, ATIVO)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
         long idFilial = 0;
 
         try (Connection conn = obterConexao()) {
@@ -39,6 +39,7 @@ public class DAOFilial {
                 stmt.setString(7, filial.getCep());
                 stmt.setString(8, filial.getCidade());
                 stmt.setString(9, filial.getEstado());
+                stmt.setBoolean(10, true);
                 stmt.executeUpdate();
 
                 try (ResultSet chave = stmt.getGeneratedKeys()) {
@@ -57,10 +58,11 @@ public class DAOFilial {
 
     public static ArrayList<Filial> listar() {
         ArrayList<Filial> listaFiliais = new ArrayList<>();
-        String query = "SELECT * FROM filial";
+        String query = "SELECT * FROM filial WHERE ATIVO = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setBoolean(1, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         Filial filial = new Filial();
@@ -92,11 +94,12 @@ public class DAOFilial {
 
     public static ArrayList<Filial> obterFilial(int id) {
         ArrayList<Filial> filiais = new ArrayList<>();
-        String query = "SELECT * FROM filial WHERE ID = ?";
+        String query = "SELECT * FROM filial WHERE ID = ? AND ATIVO = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setInt(1, id);
+                stmt.setBoolean(2, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         Filial filial = new Filial();
@@ -160,10 +163,11 @@ public class DAOFilial {
     }
 
     public static void excluirFilial(int id) {
-        String query = "DELETE FROM filial WHERE ID = ?";
+        String query = "UPDATE FILIAL SET ATIVO = ? WHERE ID = ?";
         try (Connection conn = obterConexao()) {
             try (PreparedStatement stmtCategoria = conn.prepareStatement(query)) {
-                stmtCategoria.setInt(1, id);
+                stmtCategoria.setBoolean(1, false);
+                stmtCategoria.setInt(2, id);
                 stmtCategoria.executeUpdate();
             }
         } catch (ClassNotFoundException ex) {

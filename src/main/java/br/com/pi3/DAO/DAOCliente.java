@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,8 +24,8 @@ public class DAOCliente {
 
     public static long incluir(Cliente cliente) throws SQLException, ClassNotFoundException {
         String query = "INSERT INTO cliente (NOME, CPF, SEXO, DTNASCIMENTO, ESTADOCIVIL, ENDERECO,"
-                + "COMPLEMENTO, NUMERO, BAIRRO, CEP, CIDADE, ESTADO)"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+                + "COMPLEMENTO, NUMERO, BAIRRO, CEP, CIDADE, ESTADO, ATIVO)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
         long idCliente = 0;
 
         try (Connection conn = obterConexao()) {
@@ -42,6 +43,8 @@ public class DAOCliente {
                 stmt.setString(10, cliente.getCep());
                 stmt.setString(11, cliente.getCidade());
                 stmt.setString(12, cliente.getEstado());
+                stmt.setBoolean(13, true);
+                
                 stmt.executeUpdate();
 
                 try (ResultSet chave = stmt.getGeneratedKeys()) {
@@ -60,13 +63,54 @@ public class DAOCliente {
 
         return idCliente;
     }
-
-    public static ArrayList<Cliente> listar() {
+    
+    public static ArrayList<Cliente> procurar(String valor) {
         ArrayList<Cliente> listaClientes = new ArrayList<>();
-        String query = "SELECT * FROM cliente";
+        String query = "SELECT * FROM Cliente WHERE Nome LIKE ? AND Ativo = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, "%" + valor + "%");
+                stmt.setBoolean(2, true);
+                try (ResultSet resultados = stmt.executeQuery()) {
+                    while (resultados.next()) {
+                        Cliente cliente = new Cliente();
+                        cliente.setId(resultados.getInt("ID"));
+                        cliente.setNome(resultados.getString("NOME"));
+                        cliente.setCpf(resultados.getString("CPF"));
+                        cliente.setSexo(resultados.getString("SEXO"));
+                        cliente.setDtNascimento(resultados.getString("DTNASCIMENTO"));
+                        cliente.setEstadoCivil(resultados.getString("ESTADOCIVIL"));
+                        cliente.setEndereco(resultados.getString("ENDERECO"));
+                        cliente.setComplemento(resultados.getString("COMPLEMENTO"));
+                        cliente.setNumero(resultados.getString("NUMERO"));
+                        cliente.setBairro(resultados.getString("BAIRRO"));
+                        cliente.setCep(resultados.getString("CEP"));
+                        cliente.setCidade(resultados.getString("CIDADE"));
+                        cliente.setEstado(resultados.getString("ESTADO"));
+                        listaClientes.add(cliente);
+                    }
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaClientes;
+    }
+
+    public static ArrayList<Cliente> listar() {
+        ArrayList<Cliente> listaClientes = new ArrayList<>();
+        String query = "SELECT * FROM cliente WHERE ativo = ?";
+        try (Connection conn = obterConexao()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setBoolean(1, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         Cliente cliente = new Cliente();
@@ -104,11 +148,12 @@ public class DAOCliente {
 
     public static ArrayList<Cliente> obterCliente(int id) {
         ArrayList<Cliente> clientes = new ArrayList<>();
-        String query = "SELECT * FROM CLIENTE WHERE ID = ?";
+        String query = "SELECT * FROM CLIENTE WHERE ID = ? AND ATIVO = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setInt(1, id);
+                stmt.setBoolean(2, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         Cliente cliente = new Cliente();
@@ -178,10 +223,11 @@ public class DAOCliente {
     }
 
     public static void excluirCliente(int id) {
-        String query = "DELETE FROM CLIENTE WHERE ID = ?";
+        String query = "UPDATE CLIENTE SET ATIVO = ? WHERE ID = ?";
         try (Connection conn = obterConexao()) {
             try (PreparedStatement stmtCategoria = conn.prepareStatement(query)) {
-                stmtCategoria.setInt(1, id);
+                stmtCategoria.setBoolean(1, false);
+                stmtCategoria.setInt(2, id);
                 stmtCategoria.executeUpdate();
             }
         } catch (ClassNotFoundException ex) {

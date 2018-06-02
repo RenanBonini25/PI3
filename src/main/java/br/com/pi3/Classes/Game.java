@@ -13,7 +13,7 @@ public class Game extends Produto {
     }
 
     public Game(String nome, int quantidade, double precoCompra, double precoVenda, 
-            String plataforma, String desenvolvedora, String classIndicativa) {
+            boolean ativo, String plataforma, String desenvolvedora, String classIndicativa) {
         super(nome, quantidade, precoCompra, precoVenda);
         this.plataforma = plataforma;
         this.desenvolvedora = desenvolvedora;

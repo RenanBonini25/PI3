@@ -1,23 +1,23 @@
 
-package br.com.pi3;
+package br.com.pi3.Servlets;
 
+import br.com.pi3.Classes.Cliente;
+import br.com.pi3.DAO.DAOCliente;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "Logout", urlPatterns = {"/Logout"})
-public class Logout extends HttpServlet {
+@WebServlet(name = "BuscarCliente", urlPatterns = {"/BuscarCliente"})
+public class BuscarCliente extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sessao = request.getSession();
-        sessao.invalidate();
-        response.sendRedirect(request.getContextPath() + "/Login");
+       
     }
 
     @Override
@@ -29,7 +29,12 @@ public class Logout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String nome = request.getParameter("txtNome");
+        
+        request.setAttribute("listaClientes", DAOCliente.procurar(nome));
+        RequestDispatcher rd = request.getRequestDispatcher("Vendas_SelecionarCliente.jsp");
+        rd.forward(request, response);
+        
     }
 
     @Override

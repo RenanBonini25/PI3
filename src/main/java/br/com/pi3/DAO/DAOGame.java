@@ -25,8 +25,8 @@ public class DAOGame {
 
     public static int incluir(Game game) throws SQLException, ClassNotFoundException {
         String query = "INSERT INTO game (NOME, QUANTIDADE, PRECOCOMPRA,"
-                + "PRECOVENDA, PLATAFORMA, DESENVOLVEDORA, CLASSIFICACAO)"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?) ";
+                + "PRECOVENDA, PLATAFORMA, DESENVOLVEDORA, CLASSIFICACAO, ATIVO)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
         int idGame = 0;
 
         try (Connection conn = obterConexao()) {
@@ -39,6 +39,7 @@ public class DAOGame {
                 stmt.setString(5, game.getPlataforma());
                 stmt.setString(6, game.getDesenvolvedora());
                 stmt.setString(7, game.getClassIndicativa());
+                stmt.setBoolean(8, true);
                 stmt.executeUpdate();
 
                 try (ResultSet chave = stmt.getGeneratedKeys()) {
@@ -76,10 +77,11 @@ public class DAOGame {
 
     public static ArrayList<Game> listar() {
         ArrayList<Game> listaGames = new ArrayList<>();
-        String query = "SELECT * FROM game";
+        String query = "SELECT * FROM game WHERE ATIVO = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setBoolean(1, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         Game game = new Game();
@@ -137,13 +139,14 @@ public class DAOGame {
 
     public static ArrayList<Game> obterGame(int id) {
         ArrayList<Game> listaGames = new ArrayList<>();
-        String query = "SELECT * FROM game WHERE ID = ?";
+        String query = "SELECT * FROM game WHERE ID = ? AND ATIVO = ?";
         String query2 = "SELECT distinct GAME_CAT.ID_CAT FROM GAME_CAT\n"
                 + "INNER JOIN GAME ON ? = GAME_CAT.ID_GAME";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setInt(1, id);
+                stmt.setBoolean(2, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         Game game = new Game();
@@ -223,10 +226,11 @@ public class DAOGame {
     }
     
     public static void excluirGame(int id) {
-        String query = "DELETE FROM game WHERE ID = ?";
+        String query = "UPDATE GAME SET ATIVO = ? WHERE ID = ?";
         try (Connection conn = obterConexao()) {
             try (PreparedStatement stmtCategoria = conn.prepareStatement(query)) {
-                stmtCategoria.setInt(1, id);
+                stmtCategoria.setBoolean(1, false);
+                stmtCategoria.setInt(2, id);
                 stmtCategoria.executeUpdate();
             }
         } catch (ClassNotFoundException ex) {

@@ -1,5 +1,5 @@
 
-package br.com.pi3;
+package br.com.pi3.Servlets;
 
 import br.com.pi3.DAO.DAOUsuario;
 import java.io.IOException;

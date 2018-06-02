@@ -1,7 +1,5 @@
 package br.com.pi3.Classes;
 
-import java.util.Date;
-
 public class Cliente {
 
     private int id;
@@ -17,6 +15,7 @@ public class Cliente {
     private String cep;
     private String cidade;
     private String estado;
+    private boolean ativo;
 
     public Cliente(String nome, String cpf, String sexo, String dtNascimento, String estadoCivil, 
             String endereco, String complemento, String numero, String bairro, String cep, 

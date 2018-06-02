@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.pi3;
+package br.com.pi3.Servlets;
 
 import br.com.pi3.Classes.Cliente;
 import br.com.pi3.DAO.DAOCliente;

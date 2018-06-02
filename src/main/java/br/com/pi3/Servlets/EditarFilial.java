@@ -1,4 +1,4 @@
-package br.com.pi3;
+package br.com.pi3.Servlets;
 
 import br.com.pi3.Classes.Filial;
 import br.com.pi3.DAO.DAOFilial;

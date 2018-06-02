@@ -26,8 +26,8 @@ public class DAOUsuario {
     
     public static long incluir(Usuario usuario) throws SQLException, ClassNotFoundException {
         String query = "INSERT INTO usuario (NOME, CPF, USERNAME,"
-                + "SENHA, SETOR, FILIAL, PERMISSAO)"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?) ";
+                + "SENHA, SETOR, FILIAL, PERMISSAO, ATIVO)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
         long idUsuario = 0;
 
         try (Connection conn = obterConexao()) {
@@ -40,6 +40,7 @@ public class DAOUsuario {
                 stmt.setString(5, usuario.getSetor());
                 stmt.setString(6, usuario.getFilial());
                 stmt.setString(7, usuario.getPermissoes().get(0).getNome());
+                stmt.setBoolean(8, true);
                 stmt.executeUpdate();
 
                 try (ResultSet chave = stmt.getGeneratedKeys()) {
@@ -57,12 +58,13 @@ public class DAOUsuario {
     }
     
     public static Usuario procurarUsuario(String username) throws SQLException, ClassNotFoundException {
-        String query = "SELECT * FROM usuario WHERE username = ?";
+        String query = "SELECT * FROM usuario WHERE username = ? AND ATIVO = ?";
         Usuario usuario = new Usuario();
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, username);
+                stmt.setBoolean(2, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         usuario.setId(resultados.getInt("ID"));
@@ -90,10 +92,11 @@ public class DAOUsuario {
     
     public static ArrayList<Usuario> listar() {
         ArrayList<Usuario> listaUsuarios = new ArrayList<>();
-        String query = "SELECT * FROM usuario";
+        String query = "SELECT * FROM usuario WHERE ATIVO = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setBoolean(1, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         Usuario usuario = new Usuario();
@@ -127,11 +130,12 @@ public class DAOUsuario {
     
     public static ArrayList<Usuario> obterUsuario(int id) {
         ArrayList<Usuario> listaUsuarios = new ArrayList<>();
-        String query = "SELECT * FROM usuario WHERE ID = ?";
+        String query = "SELECT * FROM usuario WHERE ID = ? AND ATIVO = ?";
         try (Connection conn = obterConexao()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setInt(1, id);
+                stmt.setBoolean(2, true);
                 try (ResultSet resultados = stmt.executeQuery()) {
                     while (resultados.next()) {
                         Usuario usuario = new Usuario();
@@ -195,10 +199,11 @@ public class DAOUsuario {
     }
     
     public static void excluirUsuario(int id) {
-        String query = "DELETE FROM usuario WHERE ID = ?";
+        String query = "UPDATE usuario SET ATIVO = ? WHERE ID = ?";
         try (Connection conn = obterConexao()) {
             try (PreparedStatement stmtCategoria = conn.prepareStatement(query)) {
-                stmtCategoria.setInt(1, id);
+                stmtCategoria.setBoolean(1, false);
+                stmtCategoria.setInt(2, id);
                 stmtCategoria.executeUpdate();
             }
         } catch (ClassNotFoundException ex) {

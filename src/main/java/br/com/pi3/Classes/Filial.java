@@ -12,6 +12,7 @@ public class Filial {
     private String cep;
     private String cidade;
     private String estado;
+    private boolean ativo;
 
     public Filial() {
     }

@@ -12,6 +12,7 @@ public class Usuario {
     private String setor;
     private String filial;
     private List<Permissao> permissoes;
+    private boolean ativo;
 
     public Usuario() {
     }
